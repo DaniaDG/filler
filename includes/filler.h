@@ -17,9 +17,10 @@ typedef struct s_coords
 {
 	int				x;
 	int				y;
-	//int				**heat_map;
+	int				**heat_map;
 	struct s_coords	*next;
 }					t_coords;
+
 
 typedef enum
 {
@@ -34,7 +35,7 @@ typedef struct 		s_filler
 	int				token_height;
 	int				token_width;
 	char			**map;
-	int				**heat_map;
+	//int				**heat_map;
 	char			**token;
 	t_coords		*shape;
 	t_coords		*enemy_shape;
