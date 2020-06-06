@@ -35,7 +35,7 @@ typedef struct 		s_filler
 	int				token_height;
 	int				token_width;
 	char			**map;
-	//int				**heat_map;
+	int				**heat_map;
 	char			**token;
 	t_coords		*shape;
 	t_coords		*enemy_shape;

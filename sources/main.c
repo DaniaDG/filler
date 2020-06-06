@@ -94,29 +94,90 @@ int		get_token(t_filler *ptr)
 	return (1);
 }
 
-int			**init_heat_map(t_filler *ptr)
+int			**init_heat_map(t_filler *ptr, int x, int y)
 {
 	int		**tmp;
 	int		height;
 	int		width;
+	int		i;
 
 	if (!(tmp = (int**)malloc(sizeof(int*) * ptr->map_height)))
 		return (NULL);
 	height = 0;
 	while (height < ptr->map_height)
 	{
-		width = 0;
 		if (!(tmp[height] = (int*)malloc(sizeof(int) * ptr->map_width)))
 		{
 			while (height-- <= 0)
 				ft_memdel((void**)&tmp[height]);
 			return (NULL);
 		}
+		width = 0;
 		while (width < ptr->map_width)
 		{
-			tmp[height][width] = 13;
+			//tmp[height][width] = ft_abs(width - x) + ft_abs(height - y);
+			tmp[height][width] = 0;
 			width++;
 		}
+		height++;
+	}
+	tmp[y - 1][x - 1] = 1;
+	tmp[y - 1][x + 1] = 1;
+	tmp[y + 1][x - 1] = 1;
+	tmp[y + 1][x + 1] = 1;
+	
+	height = y;
+	width = x;
+	i = 0;
+	while (i < ptr->map_width)
+	{
+		if (y - 1 >= 0)
+			tmp[y - 1][i] = ft_abs(width);
+		tmp[y][i] = ft_abs(width);
+		if (y + 1 < ptr->map_height)
+			tmp[y + 1][i] = ft_abs(width);
+		width--;
+		i++;
+	}
+	i = 0;
+	while (i < ptr->map_height)
+	{
+		if (x - 1 >= 0)
+			tmp[i][x - 1] = tmp[i][x - 1] != 1 ? ft_abs(height) : 1;
+		tmp[i][x] = ft_abs(height);
+		if (x - 1 < ptr->map_width)
+			tmp[i][x + 1] = tmp[i][x + 1] != 1 ? ft_abs(height) : 1;
+		height--;
+		i++;
+	}
+
+	int		a;
+	height = 0;
+	int		flag1 = 0;
+	int		flag2 = 0;
+	a = x + y - height - 1;
+	while (height < ptr->map_height)
+	{
+		width = 0;
+		flag2 = 0;
+		if (height - 1 >= 0)
+			a = !flag1 ? tmp[height - 1][width] - 1 : tmp[height - 1][width] + 1;
+		if (!tmp[height][width])
+		{
+			while (width < ptr->map_width)
+			{
+				if (!tmp[height][width])
+					tmp[height][width] = flag2 ? a++ :a--;
+				else
+				{
+					a = tmp[height][width] + 1;
+					flag2 = 1;
+				}
+				width++;
+			}
+		}
+		else
+			flag1 = 1;
 		height++;
 	}
 	return (tmp);
@@ -131,7 +192,7 @@ t_coords	*create_coord_elem(t_filler *ptr, int x, int y)
 	tmp->x = x;
 	tmp->y = y;
 	tmp->next = NULL;
-	if (!(tmp->heat_map = init_heat_map(ptr)))
+	if (!(tmp->heat_map = init_heat_map(ptr, x, y)))
 	{
 		//free_list;
 		return (NULL);
@@ -180,23 +241,75 @@ int		get_coords_enemy_shape(t_filler *ptr)
 	return (1);
 }
 
+
 void	print_heat_map(t_filler *ptr)
 {
 	int		height;
 	int		width;
+	int		**map;
 
+	//map = ptr->enemy_shape->next->heat_map;
+	map = ptr->heat_map;
 	height = 0;
 	while (height < ptr->map_height)
 	{
 		width = 0;
 		while (width < ptr->map_width)
 		{
-			printf("%3d ", ptr->enemy_shape->heat_map[height][width]);
+			printf("%2d ", map[height][width]);
 			width++;
 		}
-		write(1, "\n", 1);
+		printf("\n");
+		//ft_putchar('\n');
 		height++;
 	}
+}
+
+int		get_min_distance(t_filler *ptr, int height, int width)
+{
+	t_coords	*enemy;
+	int			min;
+	int			check;
+
+	check = ptr->enemy_shape->heat_map[height][width];
+	min = check;
+	enemy = ptr->enemy_shape;
+	while (enemy)
+	{
+		check = enemy->heat_map[height][width];
+		if (check < min)
+			min = check;
+		enemy = enemy->next;
+	}
+	return (min);
+}
+
+int		**make_heat_map(t_filler *ptr)
+{
+	int			**tmp;
+	int			height;
+	int			width;
+
+	if (!(tmp = (int**)malloc(sizeof(int*) * ptr->map_height)))
+		return (NULL);
+	height = 0;
+	while (height < ptr->map_height)
+	{
+		if (!(tmp[height] = (int*)malloc(sizeof(int) * ptr->map_width)))
+		{
+			while (height-- <= 0)
+				ft_memdel((void**)&tmp[height]);
+			return (NULL);
+		}
+		width = 0;
+		while (width < ptr->map_width)
+		{
+			tmp[height][width] = get_min_distance(ptr, height, width);
+			width++;
+		}
+		height++;
+	}
+	return (tmp);
 }
 
 int		main()
@@ -236,8 +349,8 @@ int		main()
 		printf("enemy shape (%d, %d)\n", tmp->x, tmp->y);
 		tmp = tmp->next;
 	}
-	// if (make_heat_map(ptr))
-	// 	printf("make_heat_map OK\n");
+	if ((ptr->heat_map = make_heat_map(ptr)))
+		printf("make_heat_map OK\n");
 
 	print_heat_map(ptr);
 
