@@ -94,6 +94,59 @@ int		get_token(t_filler *ptr)
 	return (1);
 }
 
+
+int			**init_heat_map(t_filler *ptr, int x, int y)
+{
+	int		**tmp;
+	int		height;
+	int		width;
+	//int		i;
+	int		max;
+
+	if (!(tmp = (int**)malloc(sizeof(int*) * ptr->map_height)))
+		return (NULL);
+	height = 0;
+	while (height < ptr->map_height)
+	{
+		if (!(tmp[height] = (int*)malloc(sizeof(int) * ptr->map_width)))
+		{
+			while (height-- <= 0)
+				ft_memdel((void**)&tmp[height]);
+			return (NULL);
+		}
+		height++;
+	}
+
+int		check;
+	max = ft_max(ptr->map_width, ptr->map_height) - 1;
+
+	while (max >= 0)
+	{
+		height = y - max;
+		while (height <= y + max)
+		{
+			width = x - max;
+			while (width <= x + max)
+			{
+				if (height >= 0 && width >= 0 && height < ptr->map_height && width < ptr->map_width)
+				{
+					tmp[height][width] = max;
+					check = tmp[height][width];
+				}
+				width++;
+			}
+			height++;
+		}
+		//i++;
+		max--;
+		//if (height == ptr->map_height && width == ptr->map_width)
+		//	break ;
+	}
+	return (tmp);
+}
+
+
+/*
 int			**init_heat_map(t_filler *ptr, int x, int y)
 {
 	int		**tmp;
@@ -182,6 +235,7 @@ int			**init_heat_map(t_filler *ptr, int x, int y)
 	}
 	return (tmp);
 }
+*/
 
 t_coords	*create_coord_elem(t_filler *ptr, int x, int y)
 {
