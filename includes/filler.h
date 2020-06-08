@@ -56,12 +56,16 @@ typedef struct 		s_filler
 	char			player_symbol;
 	char			enemy_symbol;
 	int				h_map[100][100];
-	t_coords		*shape;
+	//t_coords		*shape;
 	t_coords		*enemy_shape;
 	t_coords		*player_shape;
 	t_player		player;
 	t_status		status;
 }					t_filler;
+
+
+void				moove_token_coords(t_filler *ptr);
+int					find_position(t_filler *ptr);
 
 
 #endif

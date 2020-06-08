@@ -47,8 +47,15 @@ char		**get_map(t_filler *ptr)
 	line = NULL;
 	if (!(tmp = (char**)malloc(sizeof(char*) * (ptr->map_height + 1))))
 		return (NULL);
-	get_next_line(0, &line);
-	ft_memdel((void**)&line);
+	while (get_next_line(0, &line))
+	{
+		if (*line == ' ')
+		{
+			ft_memdel((void**)&line);
+			break ;
+		}
+		ft_memdel((void**)&line);
+	}
 	height = 0;
 	while (height < ptr->map_height)
 	{
@@ -75,7 +82,6 @@ int		get_token(t_filler *ptr)
 
 	line = NULL;
 	get_next_line(0, &line);
-	//printf("test = %s\n", line);
 	end = line + 5;
 	ptr->token_height = ft_strtol(end, &end);
 	ptr->token_width = ft_strtol(end, &end);
@@ -97,12 +103,39 @@ int		get_token(t_filler *ptr)
 }
 
 
-int			**init_heat_map(t_filler *ptr, int x, int y)
+void		calculate_distance(t_filler *ptr, int ***map, int x, int y)
 {
 	int		**tmp;
 	int		height;
 	int		width;
-	int		max;
+	int		i;
+
+	tmp = *map;
+	i = ft_max(ptr->map_width, ptr->map_height) - 1;
+	while (i >= 0)
+	{
+		height = y - i;
+		while (height <= y + i)
+		{
+			width = x - i;
+			while (width <= x + i)
+			{
+				if (height >= 0 && width >= 0 && height < ptr->map_height && width < ptr->map_width)
+					tmp[height][width] = i;
+				if (width == x + i)
+					break ;
+				width = (height == y - i || height == y + i) ? (width + 1) : (x + i);
+			}
+			height++;
+		}
+		i--;
+	}
+}
+
+int			**init_heat_map(t_filler *ptr, int x, int y)
+{
+	int		**tmp;
+	int		height;
 
 	if (!(tmp = (int**)malloc(sizeof(int*) * ptr->map_height)))
 		return (NULL);
@@ -117,26 +150,7 @@ int			**init_heat_map(t_filler *ptr, int x, int y)
 		}
 		height++;
 	}
-
-	max = ft_max(ptr->map_width, ptr->map_height) - 1;
-	while (max >= 0)
-	{
-		height = y - max;
-		while (height <= y + max)
-		{
-			width = x - max;
-			while (width <= x + max)
-			{
-				if (height >= 0 && width >= 0 && height < ptr->map_height && width < ptr->map_width)
-					tmp[height][width] = max;
-				if (width == x + max)
-					break ;
-				width = (height == y - max || height == y + max) ? (width + 1) : (x + max);
-			}
-			height++;
-		}
-		max--;
-	}
+	calculate_distance(ptr, &tmp, x, y);
 	return (tmp);
 }
 
@@ -268,25 +282,6 @@ int		**make_heat_map(t_filler *ptr, t_status status)
 	return (tmp);
 }
 
-// void	final_heat_map(t_filler *ptr)
-// {
-// 	int		h = 0;
-// 	int		w = 0;
-
-// 	while (h < ptr->map_height)
-// 	{
-// 		w = 0;
-// 		while (w < ptr->map_width)
-// 		{
-// 			ptr->h_map[h][w] = ptr->player_heat_map[h][w] + ptr->enemy_heat_map[h][w];
-// 			printf("%2d ", ptr->h_map[h][w]);
-// 			w++;
-// 		}
-// 		printf("\n");
-// 		h++;
-// 	}
-// }
-
 int		add_token_coord(t_filler *ptr, int x, int y)
 {
 	t_token_coords	*tmp;
@@ -334,74 +329,25 @@ int		get_token_coords(t_filler *ptr)
 int		main()
 {
 	t_filler	*ptr;
-	char		**map;
 
 	if (!(ptr = (t_filler*)malloc(sizeof(t_filler))))
 		return (0);
-	ptr->enemy_shape = NULL;
-
-	if (get_map_size(ptr))
-		printf("get_map_size OK\n");
-
-	printf("x = %d, y = %d\nPlayer's number %d\n", ptr->map_width, ptr->map_height,
-													ptr->player == PLAYER_1 ? 1 : 2);
-
-	if ((ptr->map = get_map(ptr)))
-		printf("get_map OK\n");
-	
-	map = ptr->map;
-	while (*map)
-		printf("%s\n", *map++);
-
-	if (get_token(ptr))
-		printf("get_token OK\n");
-	printf("x = %d, y = %d\n", ptr->token_width, ptr->token_height);
-	map = ptr->token;
-	while (*map)
-		printf("%s\n", *map++);
-
-	if (get_token_coords(ptr))
-		printf("get_token coords OK\n");
-	t_token_coords	*token;
-	token = ptr->token_coords;
-	while (token)
-	{
-		printf("token coords (%d, %d)\n", token->x, token->y);
-		token = token->next;
+	if (!get_map_size(ptr))
+		exit(1);
+	while (1) {
+	if (!(ptr->map = get_map(ptr)))
+		exit(1);	
+	if (!get_token(ptr))
+		exit(1);	
+	get_token_coords(ptr);
+	moove_token_coords(ptr);
+	if (!get_coords_enemy_shape(ptr))
+		exit(1);	
+	if (!(ptr->enemy_heat_map = make_heat_map(ptr, ENEMY)))
+		exit(1);	
+	if (!(ptr->player_heat_map = make_heat_map(ptr, PLAYER)))
+		exit(1);	
+	find_position(ptr);
 	}
-
-	if (get_coords_enemy_shape(ptr))
-		printf("get_coords_enemy_shape OK\n");
-
-	t_coords	*tmp = ptr->enemy_shape;
-	while (tmp)
-	{
-		printf("enemy shape (%d, %d)\n", tmp->x, tmp->y);
-		tmp = tmp->next;
-	}
-
-	tmp = ptr->player_shape;
-	while (tmp)
-	{
-		printf("player shape (%d, %d)\n", tmp->x, tmp->y);
-		tmp = tmp->next;
-	}
-
-	if ((ptr->enemy_heat_map = make_heat_map(ptr, ENEMY)))
-		printf("make_heat_map ENEMY OK\n");
-
-	print_heat_map(ptr, ptr->enemy_heat_map);
-	printf("\n\n");
-
-	if ((ptr->player_heat_map = make_heat_map(ptr, PLAYER)))
-		printf("make_heat_map PLAYER OK\n");
-	print_heat_map(ptr, ptr->player_heat_map);
-
-	// final_heat_map(ptr);
-	// printf("map %d %d\n", ptr->map_height, ptr->map_width);
-	// printf("token %d %d\n", ptr->token_height, ptr->token_width);
-	
-
-
 	return (0);
 }
