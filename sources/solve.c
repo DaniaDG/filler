@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_position.c                                    :+:      :+:    :+:   */
+/*   solve.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,29 +15,10 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-void	moove_token_coords(t_filler *ptr)
-{
-	t_token_coords	*tmp;
 
-	tmp = ptr->token_coords;
-	while (tmp)
-	{
-		ptr->x_move = tmp->x;
-		ptr->y_move = tmp->y;
-		tmp = tmp->next;
-	}
-	tmp = ptr->token_coords;
-	while (tmp)
-	{
-		tmp->x -= ptr->x_move;
-		tmp->y -= ptr->y_move;
-		tmp = tmp->next;
-	}
-}
-
-int		check_intersection(t_filler *ptr, t_coords player_shape)
+int		check_intersection(t_filler *ptr, t_coords *player_coords)
 {
-	t_token_coords	*tmp;
+	t_coords		*tmp;
 	int				x;
 	int				y;
 	int				n;
@@ -46,22 +27,22 @@ int		check_intersection(t_filler *ptr, t_coords player_shape)
 	n = 0;
 	while (tmp)
 	{
-		x = player_shape.x + tmp->x;
-		y = player_shape.y + tmp->y;
+		x = player_coords->x + tmp->x;
+		y = player_coords->y + tmp->y;
 		if (x < 0 || y < 0 || x >= ptr->map_width || y >= ptr->map_height)
 			return (-1);
-		if (ptr->map[y][x] == 'X')
+		if (ptr->map[y][x] == ptr->enemy_char)
 			return (-1);
-		if (ptr->map[y][x] == 'o' || ptr->map[y][x] == 'O')
+		if (ptr->map[y][x] == ptr->player_char || ptr->map[y][x] == ft_tolower(ptr->player_char))
 			n++;
 		tmp = tmp->next;
 	}
 	return (n);
 }
 
-int		get_distance(t_filler *ptr, t_coords player_shape)
+int		get_distance(t_filler *ptr, t_coords *player_coords)
 {
-	t_token_coords	*tmp;
+	t_coords		*tmp;
 	int				x;
 	int				y;
 	int				n;
@@ -70,41 +51,53 @@ int		get_distance(t_filler *ptr, t_coords player_shape)
 	n = 0;
 	while (tmp)
 	{
-		x = player_shape.x + tmp->x;
-		y = player_shape.y + tmp->y;
-		n += ptr->enemy_heat_map[y][x];
+		x = player_coords->x + tmp->x;
+		y = player_coords->y + tmp->y;
+		n += ptr->heat_map[y][x];
 		tmp = tmp->next;
 	}
 	return (n);
 }
 
 
-int		find_position(t_filler *ptr)
+int		solve(t_filler *ptr)
 {
-	t_coords	*player_shape;
+	t_coords	*player_coords;
 	int			dist;
 	int			min;
-	int			x;
-	int			y;
+	int			flag;
 
-	x = 0;
-	y = 0;
-	player_shape = ptr->player_shape;
-	dist = 100000;
-	min = dist;
-	while (player_shape)
+	flag = 0;
+	player_coords = ptr->player_coords;
+	while (player_coords)
 	{
-		if (check_intersection(ptr, *player_shape) == 1)
+		if (check_intersection(ptr, player_coords) == 1)
 		{
-			if ((dist = get_distance(ptr, *player_shape)) < min)
+			dist = get_distance(ptr, player_coords);
+			min = dist;
+			ptr->x = player_coords->x - ptr->x_move;
+			ptr->y = player_coords->y - ptr->y_move;
+			player_coords = player_coords->next;
+			flag = 1;
+			break ;
+		}
+		player_coords = player_coords->next;
+	}
+	if (!flag)
+		return (0);
+	while (player_coords)
+	{
+		if (check_intersection(ptr, player_coords) == 1)
+		{
+			if ((dist = get_distance(ptr, player_coords)) < min)
 			{
 				min = dist;
-				x = player_shape->x - ptr->x_move;
-				y = player_shape->y - ptr->y_move;
+				ptr->x = player_coords->x - ptr->x_move;
+				ptr->y = player_coords->y - ptr->y_move;
 			}
 		}
-		player_shape = player_shape->next;
+		player_coords = player_coords->next;
 	}
-	printf("%d %d\n", y, x);
-	return (0);
+	printf("%d %d\n", ptr->y, ptr->x);
+	return (1);
 }

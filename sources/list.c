@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_functions.c                                   :+:      :+:    :+:   */
+/*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,32 +15,42 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-void		free_int_tab(int ***map, int height)
+t_coords		*create_coord_elem(int x, int y)
 {
-	int		h;
-	int		**tmp;
+	t_coords	*elem;
 
-	tmp = *map;
-	h = height - 1;
-	while (h >= 0)
-	{
-		ft_memdel((void**)&tmp[h]);
-		h--;
-	}
-	ft_memdel((void**)&tmp);
+	if (!(elem = (t_coords*)malloc(sizeof(t_coords))))
+		return (NULL);
+	elem->x = x;
+	elem->y = y;
+	elem->next = NULL;
+	return (elem);
 }
 
-void		free_char_tab(char ***map, int height)
+void			add_coord_elem(t_coords **begin, int x, int y)
 {
-	int		h;
-	char	**tmp;
+	t_coords	*tmp;
 
-	tmp = *map;
-	h = height;
-	while (h >= 0)
+	if (!(tmp = create_coord_elem(x, y)))
+		return ; //free
+	if (!(*begin))
+		*begin = tmp;
+	else
 	{
-		ft_memdel((void**)&tmp[h]);
-		h--;
+		tmp->next = *begin;
+		*begin = tmp;
 	}
-	ft_memdel((void**)&tmp);
+}
+
+void			free_coord_list(t_coords **begin)
+{
+	t_coords	*tmp;
+
+	while (*begin)
+	{
+		tmp = *begin;
+		*begin = (*begin)->next;
+		tmp->next = NULL;
+		ft_memdel((void**)&tmp);
+	}
 }

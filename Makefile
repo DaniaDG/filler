@@ -27,7 +27,8 @@ HEADERS_DIRECTORY = includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = sources/
-SOURCES_LIST = main.c find_position.c free_functions.c 
+SOURCES_LIST = main.c get_data.c init.c list.c heat_map.c solve.c\
+free_functions.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objects/

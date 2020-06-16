@@ -13,60 +13,58 @@
 #ifndef FILLER_H
 # define FILLER_H
 
-typedef struct 		s_coords
+typedef struct			s_coords
 {
-	int				x;
-	int				y;
-	int				**heat_map;
-	struct s_coords	*next;
-}					t_coords;
-
-typedef struct 		s_tocken_coords
-{
-	int				x;
-	int				y;
-	struct s_tocken_coords	*next;
-}					t_token_coords;
-
-typedef enum
-{
-	PLAYER_1,
-	PLAYER_2
-}					t_player;
+	int					x;
+	int					y;
+	struct s_coords		*next;
+}						t_coords;
 
 typedef enum
 {
 	PLAYER,
 	ENEMY
-}					t_status;
+}						t_turn;
 
-typedef struct 		s_filler
+typedef struct			s_filler
 {
-	int				map_height;
-	int				map_width;
-	int				token_height;
-	int				token_width;
-	char			**map;
-	int				**enemy_heat_map;
-	int				**player_heat_map;
-	char			**token;
-	t_token_coords	*token_coords;
-	int				x_move;
-	int				y_move;
-	char			player_symbol;
-	char			enemy_symbol;
-	int				h_map[100][100];
-	t_coords		*enemy_shape;
-	t_coords		*player_shape;
-	t_player		player;
-	t_status		status;
-}					t_filler;
+	char				*line;
+	int					map_height;
+	int					map_width;
+	int					token_height;
+	int					token_width;
+	char				player_char;
+	char				enemy_char;
+	char				**map;
+	int					**heat_map;
+	//int					**tmp;
+	t_coords			*token_coords;
+	t_coords			*player_coords;
+	t_coords			*enemy_coords;
+	int					x_move;
+	int					y_move;
+	int					x;
+	int					y;
+	t_turn				turn;
+	FILE				*fd;
+}						t_filler;
 
-
-void				moove_token_coords(t_filler *ptr);
-int					find_position(t_filler *ptr);
-void				free_token(t_filler *ptr);
-void				free_shape_list(t_filler *ptr);
+int						init_maps(t_filler *ptr);
+int						**init_int_tab(int height, int width);
+int						get_info(t_filler *ptr);
+int						get_data(t_filler *ptr);
+int						fill_map(t_filler *ptr);
+void					add_coord_elem(t_coords **begin, int x, int y);
+void					calc_distance(t_filler *ptr, int ***map, int x, int y);
+int						calc_heat_map(t_filler *ptr);
+int						get_token(t_filler *ptr);
+int						get_last_move(t_filler *ptr);
+int						skip_lines(t_filler *ptr);
+int						solve(t_filler *ptr);
+void					free_coord_list(t_coords **begin);
+void					free_int_tab(int ***map, int height);
+void					free_char_tab(char ***map, int height);
+int						check_intersection(t_filler *ptr, t_coords *player_coords);
 
 
 #endif

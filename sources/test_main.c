@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_functions.c                                   :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,36 +11,42 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "filler.h"
 #include "get_next_line.h"
 #include <stdio.h>
 
-void		free_int_tab(int ***map, int height)
+int			main()
 {
-	int		h;
-	int		**tmp;
+	char	*line = NULL;
+	int		gnl;
+	int		i = 0;
 
-	tmp = *map;
-	h = height - 1;
-	while (h >= 0)
+	while (i < 17)
 	{
-		ft_memdel((void**)&tmp[h]);
-		h--;
+		gnl = get_next_line(0, &line);
+		if (gnl == 0)
+			break ;
+		if (gnl == -1)
+		{
+			ft_putstr_fd("error\n", 2);
+			exit(1);
+		}
+		ft_memdel((void**)&line);
+		i++;
 	}
-	ft_memdel((void**)&tmp);
-}
-
-void		free_char_tab(char ***map, int height)
-{
-	int		h;
-	char	**tmp;
-
-	tmp = *map;
-	h = height;
-	while (h >= 0)
+	printf("8 2\n");
+	while (i < 35)
 	{
-		ft_memdel((void**)&tmp[h]);
-		h--;
+		gnl = get_next_line(0, &line);
+		if (gnl == 0)
+			break ;
+		if (gnl == -1)
+		{
+			ft_putstr_fd("error\n", 2);
+			exit(1);
+		}
+		ft_memdel((void**)&line);
+		i++;
 	}
-	ft_memdel((void**)&tmp);
+	printf("8 8\n");
+	return (0);
 }
