@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_vizualizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,33 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mlx.h"
 #include "libft.h"
-#include "filler.h"
 #include "get_next_line.h"
+#include "filler.h"
+#include "viz.h"
 
 int		main()
 {
-	t_filler	*ptr;
+	t_visual	*ptr;
 
-	if (!(ptr = (t_filler*)malloc(sizeof(t_filler))))
-		return (1);
-	ptr->line = NULL;
-	if (!get_info(ptr))
-		close_program(ptr);
-	if (!init_maps(ptr))
-			close_program(ptr);
+	if (!(ptr = init_ptr()))
+		return (0);
+	if (!get_info(ptr->filler))
+		exit (1);
+	if (!init_maps(ptr->filler))
+		exit(1);
 	while (1)
 	{
-		if (!fill_map(ptr))
-			close_program(ptr);
-		if (!get_token(ptr))
-			close_program(ptr);
-		if (!calc_heat_map(ptr))
-			close_program(ptr);
-		if (!solve(ptr))
-			close_program(ptr);
-		free_lists(ptr);
+		if (!fill_map(ptr->filler))
+			break ;
 	}
-	close_program(ptr);
+	
+	mlx_loop(ptr);
 	return (0);
 }
