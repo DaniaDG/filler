@@ -44,3 +44,26 @@ void		free_char_tab(char ***map, int height)
 	}
 	ft_memdel((void**)&tmp);
 }
+
+
+void		free_lists(t_filler *ptr)
+{
+	free_coord_list(&ptr->token_coords);
+	free_coord_list(&ptr->player_coords);
+	free_coord_list(&ptr->enemy_coords);
+	ptr->token_coords = NULL;
+	ptr->player_coords = NULL;
+	ptr->enemy_coords = NULL;
+	
+}
+
+void		close_program(t_filler *ptr)
+{
+	free_lists(ptr);
+	free_char_tab(&ptr->map, ptr->map_height);
+	free_int_tab(&ptr->heat_map, ptr->map_height);
+	ptr->map = NULL;
+	ptr->heat_map = NULL;
+	ft_memdel((void**)&ptr);
+	exit(1);
+}

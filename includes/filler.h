@@ -20,12 +20,6 @@ typedef struct			s_coords
 	struct s_coords		*next;
 }						t_coords;
 
-typedef enum
-{
-	PLAYER,
-	ENEMY
-}						t_turn;
-
 typedef struct			s_filler
 {
 	char				*line;
@@ -37,7 +31,6 @@ typedef struct			s_filler
 	char				enemy_char;
 	char				**map;
 	int					**heat_map;
-	//int					**tmp;
 	t_coords			*token_coords;
 	t_coords			*player_coords;
 	t_coords			*enemy_coords;
@@ -45,8 +38,6 @@ typedef struct			s_filler
 	int					y_move;
 	int					x;
 	int					y;
-	t_turn				turn;
-	FILE				*fd;
 }						t_filler;
 
 int						init_maps(t_filler *ptr);
@@ -58,13 +49,12 @@ void					add_coord_elem(t_coords **begin, int x, int y);
 void					calc_distance(t_filler *ptr, int ***map, int x, int y);
 int						calc_heat_map(t_filler *ptr);
 int						get_token(t_filler *ptr);
-int						get_last_move(t_filler *ptr);
-int						skip_lines(t_filler *ptr);
+int						check_intersection(t_filler *ptr, t_coords *player_coords);
 int						solve(t_filler *ptr);
+void					free_lists(t_filler *ptr);
 void					free_coord_list(t_coords **begin);
 void					free_int_tab(int ***map, int height);
 void					free_char_tab(char ***map, int height);
-int						check_intersection(t_filler *ptr, t_coords *player_coords);
-
+void					close_program(t_filler *ptr);
 
 #endif

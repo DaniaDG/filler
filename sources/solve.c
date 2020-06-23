@@ -59,45 +59,56 @@ int		get_distance(t_filler *ptr, t_coords *player_coords)
 	return (n);
 }
 
+int		sum_heat_map_distances(t_filler *ptr)
+{
+	int		x;
+	int		y;
+	int		sum;
+
+	sum = 0;
+	y = 0;
+	while (y < ptr->map_height)
+	{
+		x = 0;
+		while (x < ptr->map_width)
+		{
+			sum += ptr->heat_map[y][x];
+			x++;
+		}
+		y++;
+	}
+	return (sum);
+}
 
 int		solve(t_filler *ptr)
 {
-	t_coords	*player_coords;
+	t_coords	coords;
 	int			dist;
 	int			min;
-	int			flag;
 
-	flag = 0;
-	player_coords = ptr->player_coords;
-	while (player_coords)
+	min = sum_heat_map_distances(ptr);
+	coords.y = 0;
+	while (coords.y < ptr->map_height)
 	{
-		if (check_intersection(ptr, player_coords) == 1)
+		coords.x = 0;
+		while (coords.x < ptr->map_width)
 		{
-			dist = get_distance(ptr, player_coords);
-			min = dist;
-			ptr->x = player_coords->x - ptr->x_move;
-			ptr->y = player_coords->y - ptr->y_move;
-			player_coords = player_coords->next;
-			flag = 1;
-			break ;
-		}
-		player_coords = player_coords->next;
-	}
-	if (!flag)
-		return (0);
-	while (player_coords)
-	{
-		if (check_intersection(ptr, player_coords) == 1)
-		{
-			if ((dist = get_distance(ptr, player_coords)) < min)
+			if (check_intersection(ptr, &coords) == 1)
 			{
-				min = dist;
-				ptr->x = player_coords->x - ptr->x_move;
-				ptr->y = player_coords->y - ptr->y_move;
+				if ((dist = get_distance(ptr, &coords)) < min)
+				{
+					min = dist;
+					ptr->x = coords.x - ptr->x_move;
+					ptr->y = coords.y - ptr->y_move;
+				}
 			}
+			coords.x++;
 		}
-		player_coords = player_coords->next;
+		coords.y++;
 	}
-	printf("%d %d\n", ptr->y, ptr->x);
+	ft_putnbr(ptr->y);
+	write(1, " ", 1);
+	ft_putnbr(ptr->x);
+	write(1, "\n", 1);
 	return (1);
 }

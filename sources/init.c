@@ -65,8 +65,6 @@ int		init_maps(t_filler *ptr)
 		return (0);
 	if (!(ptr->heat_map = init_int_tab(ptr->map_height, ptr->map_width)))
 		return (0);
-	// if (!(ptr->tmp = init_int_tab(ptr->map_height, ptr->map_width)))
-	// 	return (0);
 	ptr->token_coords = NULL;
 	ptr->player_coords = NULL;
 	ptr->enemy_coords = NULL;

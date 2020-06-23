@@ -19,11 +19,13 @@ int			get_info(t_filler *ptr)
 {
 	char	*end;
 	int		flag;
+	int		gnl;
 
 	flag = 0;
-	while (get_next_line(0, &ptr->line) > 0)
+	while ((gnl = get_next_line(0, &ptr->line)) > 0)
 	{
-		fprintf(ptr->fd, "%s\n", ptr->line);		//for debug
+		if (gnl != 1)
+			return (0);
 		if (ft_strnequ(ptr->line, "$$$ exec p2", 11) && ft_strstr(ptr->line, "bsausage"))
 		{
 			ptr->player_char = 'X';
@@ -40,6 +42,7 @@ int			get_info(t_filler *ptr)
 			end = ptr->line + 7;
 			ptr->map_height = ft_strtol(end, &end);
 			ptr->map_width = ft_strtol(end, &end);
+			ft_memdel((void**)&ptr->line);
 			return (1) ;
 		}
 		ft_memdel((void**)&ptr->line);
@@ -51,13 +54,11 @@ int		fill_map(t_filler *ptr)
 {
 	int		h;
 	int		w;
+	int		gnl;
 
 	h = 0;
-	if (!(ft_strnequ(ptr->line, "Plateau", 7)))
-		return (0);
-	while (get_next_line(0, &ptr->line) > 0 && h < ptr->map_height)
+	while ((gnl = get_next_line(0, &ptr->line)) > 0 && h < ptr->map_height)
 	{
-		fprintf(ptr->fd, "%s\n", ptr->line);		//for debug
 		w = 0;
 		if (ft_isdigit(*(ptr->line)))
 		{
@@ -74,6 +75,8 @@ int		fill_map(t_filler *ptr)
 		}
 		ft_memdel((void**)&ptr->line);
 	}
+	if (gnl != 1)
+			return (0);
 	return (1);
 }
 
@@ -101,28 +104,17 @@ int			get_token(t_filler *ptr)
 	char	*end;
 	int		h;
 	int		flag;
-	//int		gnl;
 
-	if (ptr->token_coords)
-		free_coord_list(&ptr->token_coords);
 	end = ptr->line + 5;
 	ptr->token_height = ft_strtol(end, &end);
 	ptr->token_width = ft_strtol(end, &end);
-	fprintf(ptr->fd, "%s\n", ptr->line);		//for debug
 	ft_memdel((void**)&ptr->line);
 	h = 0;
 	flag = 0;
-	//ptr->line = (char*)malloc(sizeof(char) * (ptr->token_width + 1));
 	while (h < ptr->token_height)
 	{
 		if (get_next_line(0, &ptr->line) <= 0)
 			return (0);
-		
-		// if (h)
-		// 	read(0, ptr->line, 1);
-		// read(0, ptr->line, ptr->token_width);
-		// ptr->line[ptr->token_width] = '\0';
-		fprintf(ptr->fd, "token line [%s]\n", ptr->line);		//for debug
 		parse_token_str(ptr, h, &flag);
 		ft_memdel((void**)&ptr->line);
 		h++;		

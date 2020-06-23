@@ -63,45 +63,26 @@ int		main()
 
 	if (!(ptr = (t_filler*)malloc(sizeof(t_filler))))
 		return (1);
-	if (!(ptr->fd = fopen("/Users/Alkor/dania/filler/test", "a")))
-		printf("Cannot open file.\n");
-	fprintf(ptr->fd, "start\n");
 	ptr->line = NULL;
-
 	if (!get_info(ptr))
-		return (0);
-	if (!init_maps(ptr))
-		return (0);
-	if (!fill_map(ptr))
-		return (0);
-	if (!get_token(ptr))
-		return (0);
-	if (!calc_heat_map(ptr))
-		return (0);
-	if (!solve(ptr))
-		return (0);
-
-	//print_info(ptr);
-	fclose(ptr->fd);
+		close_program(ptr);
+	while (1)
+	{
+		if (!init_maps(ptr))
+			close_program(ptr);
+		if (!fill_map(ptr))
+			close_program(ptr);
+		if (!get_token(ptr))
+			close_program(ptr);
+		if (!calc_heat_map(ptr))
+			close_program(ptr);
+		if (!solve(ptr))
+			close_program(ptr);
+		
+		//free_all(ptr);
+		// while (1)
+		// 	continue;
+	}
+	close_program(ptr);
 	return (0);
 }
-
-
-
-	// int		i = 0;
-	// while (i < 15)
-	// {
-	// 	get_next_line(0, &ptr->line);
-	// 	fprintf(ptr->fd, "%s\n", ptr->line);
-	// 	ft_memdel((void**)&ptr->line);
-	// 	i++;
-	// }
-	// printf("8 2\n");
-	// i = 0;
-	// while (i < 10)
-	// {
-	// 	get_next_line(0, &ptr->line);
-	// 	fprintf(ptr->fd, "%s\n", ptr->line);
-	// 	ft_memdel((void**)&ptr->line);
-	// 	i++;
-	// }
