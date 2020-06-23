@@ -68,7 +68,6 @@ int		init_maps(t_filler *ptr)
 	ptr->token_coords = NULL;
 	ptr->player_coords = NULL;
 	ptr->enemy_coords = NULL;
-	ptr->turn = ptr->player_char == 'O' ? PLAYER : ENEMY;
 	ptr->token_height = 0;
 	ptr->token_width = 0;
 	ptr->x_move = 0;
