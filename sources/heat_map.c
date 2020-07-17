@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heat_map.                                          :+:      :+:    :+:   */
+/*   heat_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:18:37 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/14 09:52:16 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,56 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-void		calc_distance(t_filler *ptr, int ***map, int x, int y)
+static void	calc_distance(t_filler *ptr, int ***map, int x, int y)
 {
-	int		**tmp;
-	int		height;
-	int		width;
+	int		h;
+	int		w;
 	int		i;
 
-	tmp = *map;
 	i = ft_max(ptr->map_width, ptr->map_height) - 1;
 	while (i >= 0)
 	{
-		height = y - i;
-		while (height <= y + i)
+		h = y - i;
+		while (h <= y + i)
 		{
-			width = x - i;
-			while (width <= x + i)
+			w = x - i;
+			while (w <= x + i)
 			{
-				if (height >= 0 && width >= 0 && height < ptr->map_height && width < ptr->map_width)
-					tmp[height][width] = i;
-				if (width == x + i)
+				if (h >= 0 && w >= 0 && h < ptr->map_height &&
+										w < ptr->map_width)
+					(*map)[h][w] = i;
+				if (w == x + i)
 					break ;
-				width = (height == y - i || height == y + i) ? (width + 1) : (x + i);
+				w = (h == y - i || h == y + i) ? (w + 1) : (x + i);
 			}
-			height++;
+			h++;
 		}
 		i--;
 	}
 }
 
+static void	cycle_body(t_filler *ptr, int **tmp)
+{
+	int		h;
+	int		w;
+
+	h = 0;
+	while (h < ptr->map_height)
+	{
+		w = 0;
+		while (w < ptr->map_width)
+		{
+			if (tmp[h][w] < ptr->heat_map[h][w])
+				ptr->heat_map[h][w] = tmp[h][w];
+			w++;
+		}
+		h++;
+	}
+}
 
 int			calc_heat_map(t_filler *ptr)
 {
 	t_coords	*enemy_coords;
-	int			h;
-	int			w;
 	int			**tmp;
 
 	if (!(tmp = init_int_tab(ptr->map_height, ptr->map_width)))
@@ -61,21 +76,9 @@ int			calc_heat_map(t_filler *ptr)
 	while (enemy_coords)
 	{
 		calc_distance(ptr, &tmp, enemy_coords->x, enemy_coords->y);
-		h = 0;
-		while (h < ptr->map_height)
-		{
-			w = 0;
-			while (w < ptr->map_width)
-			{
-				if (tmp[h][w] < ptr->heat_map[h][w])
-					ptr->heat_map[h][w] = tmp[h][w];
-				w++;
-			}
-			h++;
-		}
+		cycle_body(ptr, tmp);
 		enemy_coords = enemy_coords->next;
 	}
 	free_int_tab(&tmp, ptr->map_height);
 	return (1);
 }
-

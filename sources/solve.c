@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solve.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:18:37 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/14 09:57:24 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "filler.h"
 #include "get_next_line.h"
 #include <stdio.h>
-
 
 int		check_intersection(t_filler *ptr, t_coords *player_coords)
 {
@@ -33,7 +32,8 @@ int		check_intersection(t_filler *ptr, t_coords *player_coords)
 			return (-1);
 		if (ptr->map[y][x] == ptr->enemy_char)
 			return (-1);
-		if (ptr->map[y][x] == ptr->player_char || ptr->map[y][x] == ft_tolower(ptr->player_char))
+		if (ptr->map[y][x] == ptr->player_char ||
+			ptr->map[y][x] == ft_tolower(ptr->player_char))
 			n++;
 		tmp = tmp->next;
 	}
@@ -80,6 +80,14 @@ int		sum_heat_map_distances(t_filler *ptr)
 	return (sum);
 }
 
+void	print_coords(t_filler *ptr)
+{
+	ft_putnbr(ptr->y);
+	write(1, " ", 1);
+	ft_putnbr(ptr->x);
+	write(1, "\n", 1);
+}
+
 int		solve(t_filler *ptr)
 {
 	t_coords	coords;
@@ -106,9 +114,5 @@ int		solve(t_filler *ptr)
 		}
 		coords.y++;
 	}
-	ft_putnbr(ptr->y);
-	write(1, " ", 1);
-	ft_putnbr(ptr->x);
-	write(1, "\n", 1);
 	return (1);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   viz.h                                           :+:      :+:    :+:   */
+/*   vis.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VIZ_H
-# define VIZ_H
+#ifndef VIS_H
+# define VIS_H
 
 # include "filler.h"
 
 # define IMG_H			500
 # define IMG_W			1000
-# define HEIGHT			550
+# define HEIGHT			800
 # define WIDTH			1000
 
 # define RED			0xFF0000
+# define CYAN			0x0088ff
+# define ORANGE			0xff6a00
 # define GREEN			0x00FF00
 # define BLUE			0x0108D1
 # define YELLOW			0xFFFDAC
@@ -46,17 +48,30 @@ typedef struct			s_visual
 	int					bits_per_pixel;
 	int					size_line;
 	int					endian;
+	int					len;
+	int					h;
+	int					w;
+	t_button			space;
+	t_button			drawing_flag;
 	t_filler			*filler;
+	int					y_begin;
+	int					y_end;
 }						t_visual;
 
 t_visual				*init_ptr(void);
 void					init_mlx(t_visual *ptr);
+char					**init_xpm_image(t_filler *ptr, int len);
+void					hooks(t_visual *ptr);
+int						turn_off(void *param);
 int						red(int rgb);
 int						green(int rgb);
 int						blue(int rgb);
 int						rgb(int r, int g, int b);
 int						color(int current, int max, int color1, int color2);
 void					put_pixel(t_visual *ptr, int x, int y, int color);
+void					background(t_visual *ptr, int color);
+void					color_first_image(t_visual *ptr);
+int						thread(t_visual *ptr);
 
 
 #endif

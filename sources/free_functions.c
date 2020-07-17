@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:18:37 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/14 09:22:47 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void		free_int_tab(int ***map, int height)
 	int		h;
 	int		**tmp;
 
+	if (!*map)
+		return ;
 	tmp = *map;
 	h = height - 1;
 	while (h >= 0)
@@ -35,6 +37,8 @@ void		free_char_tab(char ***map, int height)
 	int		h;
 	char	**tmp;
 
+	if (!*map)
+		return ;
 	tmp = *map;
 	h = height;
 	while (h >= 0)
@@ -45,7 +49,6 @@ void		free_char_tab(char ***map, int height)
 	ft_memdel((void**)&tmp);
 }
 
-
 void		free_lists(t_filler *ptr)
 {
 	free_coord_list(&ptr->token_coords);
@@ -54,7 +57,6 @@ void		free_lists(t_filler *ptr)
 	ptr->token_coords = NULL;
 	ptr->player_coords = NULL;
 	ptr->enemy_coords = NULL;
-	
 }
 
 void		close_program(t_filler *ptr)

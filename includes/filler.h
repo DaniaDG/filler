@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filler.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:18:37 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/16 12:51:45 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ typedef struct			s_coords
 typedef struct			s_filler
 {
 	char				*line;
+	int					o_point;
+	int					x_point;
 	int					map_height;
 	int					map_width;
 	int					token_height;
 	int					token_width;
 	char				player_char;
 	char				enemy_char;
+	char				*player_name;
+	char				*enemy_name;
 	char				**map;
 	int					**heat_map;
 	t_coords			*token_coords;
@@ -40,17 +44,18 @@ typedef struct			s_filler
 	int					y;
 }						t_filler;
 
+void					init_values(t_filler *ptr);
 int						init_maps(t_filler *ptr);
 int						**init_int_tab(int height, int width);
 int						get_info(t_filler *ptr);
 int						get_data(t_filler *ptr);
 int						fill_map(t_filler *ptr);
 void					add_coord_elem(t_coords **begin, int x, int y);
-void					calc_distance(t_filler *ptr, int ***map, int x, int y);
 int						calc_heat_map(t_filler *ptr);
 int						get_token(t_filler *ptr);
 int						check_intersection(t_filler *ptr, t_coords *player_coords);
 int						solve(t_filler *ptr);
+void					print_coords(t_filler *ptr);
 void					free_lists(t_filler *ptr);
 void					free_coord_list(t_coords **begin);
 void					free_int_tab(int ***map, int height);

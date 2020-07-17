@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:18:37 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/14 09:57:46 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 #include "filler.h"
 #include "get_next_line.h"
 
-int		main()
+int		main(void)
 {
 	t_filler	*ptr;
 
 	if (!(ptr = (t_filler*)malloc(sizeof(t_filler))))
 		return (1);
-	ptr->line = NULL;
+	init_values(ptr);
 	if (!get_info(ptr))
 		close_program(ptr);
 	if (!init_maps(ptr))
-			close_program(ptr);
+		close_program(ptr);
 	while (1)
 	{
 		if (!fill_map(ptr))
@@ -35,8 +35,8 @@ int		main()
 			close_program(ptr);
 		if (!solve(ptr))
 			close_program(ptr);
+		print_coords(ptr);
 		free_lists(ptr);
 	}
-	close_program(ptr);
 	return (0);
 }

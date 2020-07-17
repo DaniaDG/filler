@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_pixel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:06:01 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:06:02 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/17 10:52:50 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include "libft.h"
 #include "get_next_line.h"
 #include "filler.h"
-#include "viz.h"
+#include "vis.h"
 
-void		put_pixel(t_visual *ptr, int x, int y, int color)
+void			put_pixel(t_visual *ptr, int x, int y, int color)
 {
 	int		i;
 
-	if (x >= 0 && x < IMG_W && y >= 0 && y < IMG_H)
+	if (x >= 0 && x < ptr->w && y >= 0 && y < ptr->h)
 	{
 		i = (x * ptr->bits_per_pixel / 8) + (y * ptr->size_line);
 		ptr->data_addr[i] = blue(color);
