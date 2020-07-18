@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/17 23:10:09 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 12:30:04 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,17 @@ void		free_char_tab(char ***map, int height)
 
 void		free_lists(t_filler *ptr)
 {
-	free_coord_list(&ptr->token_coords);
-	// free_coord_list(&ptr->player_coords);
-	// free_coord_list(&ptr->enemy_coords);
-	ptr->token_coords = NULL;
-	// ptr->player_coords = NULL;
-	// ptr->enemy_coords = NULL;
+	free_coord_list(&ptr->player_coords);
+	free_coord_list(&ptr->enemy_coords);
+	ptr->player_coords = NULL;
+	ptr->enemy_coords = NULL;
 }
 
 void		close_program(t_filler *ptr)
 {
-	free_lists(ptr);
+	free_coord_list(&ptr->token_coords);
+	free_coord_list(&ptr->player_coords);
+	free_coord_list(&ptr->enemy_coords);
 	free_char_tab(&ptr->map, ptr->map_height);
 	free_int_tab(&ptr->heat_map, ptr->map_height);
 	ptr->map = NULL;

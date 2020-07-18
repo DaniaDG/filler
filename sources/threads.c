@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 11:42:27 by Alkor             #+#    #+#             */
-/*   Updated: 2020/07/17 16:55:28 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 12:48:57 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,24 @@ void	error(char *str)
 	exit(1);
 }
 
+static void	cycle_body(t_visual *ptr, int h, int w)
+{
+	if ((h && h % ptr->len == 0) || (w && w % ptr->len == 0))
+		put_pixel(ptr, w, h, BLACK);
+	else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'O')
+		put_pixel(ptr, w, h, BLUE);
+	else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'o')
+		put_pixel(ptr, w, h, CYAN);
+	else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'X')
+		put_pixel(ptr, w, h, RED);
+	else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'x')
+		put_pixel(ptr, w, h, ORANGE);
+}
+
 static void	*draw(void *pointer)
 {
-	int		h;
-	int		w;
+	int			h;
+	int			w;
 	t_visual	*ptr;
 
 	ptr = (t_visual*)pointer;
@@ -35,16 +49,7 @@ static void	*draw(void *pointer)
 		w = 0;
 		while (w < ptr->w)
 		{
-			if ((h && h % ptr->len == 0) || (w && w % ptr->len == 0))
-				put_pixel(ptr, w, h, BLACK);
-			else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'O')
-				put_pixel(ptr, w, h, BLUE);
-			else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'o')
-				put_pixel(ptr, w, h, CYAN);
-			else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'X')
-				put_pixel(ptr, w, h, RED);
-			else if (ptr->filler->map[h / ptr->len][w / ptr->len] == 'x')
-				put_pixel(ptr, w, h, ORANGE);
+			cycle_body(ptr, h, w);
 			w++;
 		}
 		h++;
@@ -52,13 +57,13 @@ static void	*draw(void *pointer)
 	return (0);
 }
 
-int		thread(t_visual *ptr)
+int			thread(t_visual *ptr)
 {
 	int			result;
 	pthread_t	threads[4];
 	void		*status[4];
 	int			i;
-	t_visual		tmp[4];
+	t_visual	tmp[4];
 
 	i = -1;
 	while (++i < 4)

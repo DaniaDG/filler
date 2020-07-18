@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/17 23:10:18 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 12:31:26 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		main(void)
 		if (!solve(ptr))
 			close_program(ptr);
 		print_coords(ptr);
-		free_lists(ptr);
+		free_coord_list(&ptr->token_coords);
 	}
 	return (0);
 }

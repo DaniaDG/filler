@@ -6,35 +6,13 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/18 10:21:20 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 12:45:35 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "filler.h"
 #include "get_next_line.h"
-#include <stdio.h>
-
-void		get_player_name(t_filler *ptr, int flag)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	// if (!flag)
-	// 	ptr->player_name = NULL;
-	// else
-	// 	ptr->enemy_name = NULL;
-	while (ptr->line[i] != '\0')
-	{
-		if (ptr->line[i++] == '/')
-			tmp = &ptr->line[i];
-	}
-	if (!flag)
-		ptr->player_name = ft_strsub(tmp, 0, ft_strchr(tmp, '.') - tmp);
-	else
-		ptr->enemy_name = ft_strsub(tmp, 0, ft_strchr(tmp, '.') - tmp);
-}
 
 void		get_player_info(t_filler *ptr, int *flag)
 {
@@ -77,25 +55,6 @@ int			get_info(t_filler *ptr)
 	return (0);
 }
 
-static void	cycle_body(t_filler *ptr, char *tmp, int h, int w)
-{
-	// if (ptr->map[h][w] == ptr->player_char ||
-	// 	ptr->map[h][w] == ft_tolower(ptr->player_char))
-	// 	add_coord_elem(&ptr->player_coords, w, h);
-	// if (ptr->map[h][w] == ptr->enemy_char ||
-	// 	ptr->map[h][w] == ft_tolower(ptr->enemy_char))
-	// 	add_coord_elem(&ptr->enemy_coords, w, h);
-
-	if ((tmp[w] == ft_tolower(ptr->player_char) ||
-		tmp[w] == ptr->player_char) &&
-		ptr->map[h][w] == '.')
-		add_coord_elem(&ptr->player_coords, w, h);
-	if ((tmp[w] == ft_tolower(ptr->enemy_char) ||
-		tmp[w] == ptr->enemy_char) &&
-		ptr->map[h][w] == '.')
-		add_coord_elem(&ptr->enemy_coords, w, h);
-}
-
 static void	first_fill(t_filler *ptr, char *tmp, int h, int w)
 {
 	if (tmp[w] == ptr->player_char)
@@ -106,6 +65,23 @@ static void	first_fill(t_filler *ptr, char *tmp, int h, int w)
 		ptr->tmp_coords = ptr->enemy_coords;
 		ptr->flag2 = 1;
 	}
+}
+
+static void	cycle_body(t_filler *ptr, char *tmp, int h, int w)
+{
+	if (!ptr->flag)
+	{
+		first_fill(ptr, tmp, h, w);
+		return ;
+	}
+	if ((tmp[w] == ft_tolower(ptr->player_char) ||
+		tmp[w] == ptr->player_char) &&
+		ptr->map[h][w] == '.')
+		add_coord_elem(&ptr->player_coords, w, h);
+	if ((tmp[w] == ft_tolower(ptr->enemy_char) ||
+		tmp[w] == ptr->enemy_char) &&
+		ptr->map[h][w] == '.')
+		add_coord_elem(&ptr->enemy_coords, w, h);
 }
 
 void	check_the_winner(t_filler *ptr)
@@ -128,17 +104,11 @@ int		fill_map(t_filler *ptr)
 	{
 		w = 0;
 		check_the_winner(ptr);
-		if (ft_isdigit(*(ptr->line)))// &&
-			//(int)ft_strlen(ptr->line) == ptr->map_width + 4)
+		if (ft_isdigit(*(ptr->line)) &&
+			(int)ft_strlen(ptr->line) == ptr->map_width + 4)
 		{
 			while (w < ptr->map_width)
-			{
-				if (!ptr->flag)
-					first_fill(ptr, ptr->line + 4, h, w);
-				else
-					cycle_body(ptr, ptr->line + 4, h, w);
-				w++;
-			}
+				cycle_body(ptr, ptr->line + 4, h, w++);
 			ft_strncpy(ptr->map[h], ptr->line + 4, ptr->map_width);
 			h++;
 			if (h == ptr->map_height)

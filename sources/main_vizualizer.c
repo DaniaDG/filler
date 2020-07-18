@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/17 16:31:53 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 12:35:19 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,56 +15,6 @@
 #include "get_next_line.h"
 #include "filler.h"
 #include "vis.h"
-#include <stdio.h>
-
-static void		cycle_body(t_visual *ptr, t_coords *coords)
-{
-	int		h;
-	int		w;
-
-	h = ((!coords->x && !coords->y) || (!coords->y && coords->x)) ? 0 : 1;
-	while (h < ptr->len)
-	{
-		w = ((!coords->x && !coords->y) || (coords->y && !coords->x)) ? 0 : 1;
-		while (w < ptr->len)
-		{
-			if (ptr->filler->map[coords->y][coords->x] == 'O')
-				put_pixel(ptr, coords->x * ptr->len + w,
-				coords->y * ptr->len + h, BLUE);
-			else if (ptr->filler->map[coords->y][coords->x] == 'o')
-				put_pixel(ptr, coords->x * ptr->len + w,
-				coords->y * ptr->len + h, CYAN);
-			else if (ptr->filler->map[coords->y][coords->x] == 'X')
-				put_pixel(ptr, coords->x * ptr->len + w,
-				coords->y * ptr->len + h, RED);
-			else if (ptr->filler->map[coords->y][coords->x] == 'x')
-				put_pixel(ptr, coords->x * ptr->len + w,
-				coords->y * ptr->len + h, ORANGE);
-			w++;
-		}
-		h++;
-	}
-}
-
-void	color_turn(t_visual *ptr)
-{
-	t_coords	*coords;
-
-	color_first_image(ptr);
-	coords = ptr->filler->player_coords;
-	while (coords)
-	{
-		cycle_body(ptr, coords);
-		coords = coords->next;
-	}
-	coords = ptr->filler->enemy_coords;
-	while (coords)
-	{
-		cycle_body(ptr, coords);
-		coords = coords->next;
-	}
-	mlx_put_image_to_window(ptr->mlx, ptr->win, ptr->img, 11, 31);
-}
 
 int		turn_off(void *param)
 {
@@ -75,7 +25,7 @@ int		turn_off(void *param)
 void	winner_info(t_visual *ptr)
 {
 	char	*tmp;
-	
+
 	if (!(tmp = ft_itoa(ptr->filler->o_point)))
 		return ;
 	mlx_string_put(ptr->mlx, ptr->win, 65, 2, CYAN, tmp);
@@ -97,10 +47,7 @@ int		draw(t_visual *ptr)
 		ptr->drawing_flag = NOT_PRESSED;
 		return (0);
 	}
-	if(ptr->len >= 10)
-		color_turn(ptr);
-	else
-		thread(ptr);
+	thread(ptr);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/14 09:20:07 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 12:29:19 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void			free_coord_list(t_coords **begin)
 		tmp->next = NULL;
 		ft_memdel((void**)&tmp);
 	}
+	*begin = NULL;
 }
