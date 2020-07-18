@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vis.h                                           :+:      :+:    :+:   */
+/*   vis.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/02/12 09:18:37 by bsausage         ###   ########.fr       */
+/*   Created: 2020/07/18 13:43:37 by Alkor             #+#    #+#             */
+/*   Updated: 2020/07/18 21:51:26 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 # define VIS_H
 
 # include "filler.h"
-
-# define IMG_H			500
-# define IMG_W			1000
-# define HEIGHT			800
-# define WIDTH			1000
 
 # define RED			0xFF0000
 # define CYAN			0x0088ff
@@ -32,12 +27,11 @@
 # define WHITE			0xFFFFFF
 # define BLACK			0x000000
 
-
 typedef enum
 {
 	IS_PRESSED,
 	NOT_PRESSED
-}						t_button;
+}	t_button;
 
 typedef struct			s_visual
 {
@@ -70,8 +64,7 @@ int						rgb(int r, int g, int b);
 int						color(int current, int max, int color1, int color2);
 void					put_pixel(t_visual *ptr, int x, int y, int color);
 void					background(t_visual *ptr, int color);
-void					color_first_image(t_visual *ptr);
+void					draw_first_image(t_visual *ptr);
 int						thread(t_visual *ptr);
-
 
 #endif

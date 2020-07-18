@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 11:42:27 by Alkor             #+#    #+#             */
-/*   Updated: 2020/07/18 12:48:57 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 21:36:07 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "mlx.h"
 #include <pthread.h>
 
-void	error(char *str)
+void		error(char *str)
 {
 	ft_putendl_fd(str, 2);
 	exit(1);

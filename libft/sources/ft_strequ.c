@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strequ.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 14:33:10 by bsausage          #+#    #+#             */
-/*   Updated: 2019/09/07 14:33:11 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/12 13:17:32 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int		ft_strequ(char const *s1, char const *s2)
 {
 	int		i;
-	
+
 	i = 0;
 	if (!s1 || !s2)
 		return (0);

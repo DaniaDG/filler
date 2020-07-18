@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/04 09:46:07 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/17 11:27:07 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 13:25:03 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,19 @@ static void	error(char *str)
 	exit(1);
 }
 
+static void	get_len(t_visual *ptr)
+{
+	if (ft_max(ptr->filler->map_height, ptr->filler->map_width) < 25)
+		ptr->len = 25;
+	else if (ft_max(ptr->filler->map_height, ptr->filler->map_width) < 50)
+		ptr->len = 20;
+	else
+		ptr->len = 7;
+}
+
 void		init_mlx(t_visual *ptr)
 {
+	get_len(ptr);
 	ptr->h = ptr->len * ptr->filler->map_height;
 	ptr->w = ptr->len * ptr->filler->map_width;
 	if (!(ptr->mlx = mlx_init()))
@@ -53,21 +64,7 @@ t_visual	*init_ptr(void)
 	return (ptr);
 }
 
-void		background(t_visual *ptr, int color)
-{
-	int		i;
-
-	ft_bzero(ptr->data_addr, ptr->w * ptr->h * (ptr->bits_per_pixel / 8));
-	i = ptr->h * ptr->w * 4;
-	while (i--)
-	{
-		ptr->data_addr[--i] = red(color);
-		ptr->data_addr[--i] = green(color);
-		ptr->data_addr[--i] = blue(color);
-	}
-}
-
-void		color_first_image(t_visual *ptr)
+void		draw_first_image(t_visual *ptr)
 {
 	int		h;
 	int		w;

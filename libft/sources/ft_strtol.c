@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtol.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsausage <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 18:51:12 by bsausage          #+#    #+#             */
-/*   Updated: 2019/09/06 18:51:16 by bsausage         ###   ########.fr       */
+/*   Updated: 2020/07/12 13:17:14 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 long			ft_strtol(const char *str, char **end)
 {
-	int				i;
-	int				sign;
+	int						i;
+	int						sign;
 	unsigned long long		result;
 
 	i = 0;

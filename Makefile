@@ -6,7 +6,7 @@
 #    By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/25 14:23:51 by bsausage          #+#    #+#              #
-#    Updated: 2020/07/17 16:31:18 by Alkor            ###   ########.fr        #
+#    Updated: 2020/07/18 13:40:04 by Alkor            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ HEADERS_DIRECTORY = includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = sources/
-SOURCES_LIST = get_data.c init.c list.c heat_map.c solve.c\
+SOURCES_LIST = get_data_1.c get_data_2.c init.c list.c heat_map.c solve.c\
 free_functions.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
@@ -54,7 +54,7 @@ F_OBJECTS = $(addprefix $(OBJECTS_DIRECTORY), $(F_OBJECTS_LIST))
 #VIZUALIZER
 
 VIZ_SOURCES_DIRECTORY = sources/
-VIZ_SOURCES_LIST = main_vizualizer.c init_mlx.c put_pixel.c rgb.c threads.c
+VIZ_SOURCES_LIST = main_vizualizer.c init_mlx.c put_pixel.c rgb.c threads.c drawing.c
 VIZ_SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(VIZ_SOURCES_LIST))
 
 VIZ_OBJECTS_LIST = $(patsubst %.c, %.o, $(VIZ_SOURCES_LIST))

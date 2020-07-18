@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/14 09:57:24 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 21:15:54 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	print_coords(t_filler *ptr)
 	write(1, " ", 1);
 	ft_putnbr(ptr->x);
 	write(1, "\n", 1);
+	ptr->x = 0;
+	ptr->y = 0;
 }
 
 int		solve(t_filler *ptr)

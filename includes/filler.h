@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/18 10:08:13 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 13:44:35 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int						fill_map(t_filler *ptr);
 void					add_coord_elem(t_coords **begin, int x, int y);
 int						calc_heat_map(t_filler *ptr);
 int						get_token(t_filler *ptr);
-int						check_intersection(t_filler *ptr, t_coords *player_coords);
+int						check_intersection(t_filler *ptr,
+						t_coords *player_coords);
 int						solve(t_filler *ptr);
 void					print_coords(t_filler *ptr);
 void					free_lists(t_filler *ptr);
