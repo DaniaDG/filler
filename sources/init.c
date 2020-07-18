@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/16 12:58:21 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 10:08:27 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**init_char_tab(int height, int width)
 			while (h-- <= 0)
 				ft_memdel((void**)&tmp[h]);
 			return (NULL);
-			tmp[h][width] = '\0';
+			tmp[h][width] = '.';
 		}
 		h++;
 	}
@@ -69,6 +69,7 @@ void	init_values(t_filler *ptr)
 	ptr->token_coords = NULL;
 	ptr->player_coords = NULL;
 	ptr->enemy_coords = NULL;
+	ptr->tmp_coords = ptr->enemy_coords;
 	ptr->o_point = 0;
 	ptr->x_point = 0;
 	ptr->token_height = 0;
@@ -77,6 +78,8 @@ void	init_values(t_filler *ptr)
 	ptr->y_move = 0;
 	ptr->x = 0;
 	ptr->y = 0;
+	ptr->flag = 0;
+	ptr->flag2 = 0;
 }
 
 int		init_maps(t_filler *ptr)

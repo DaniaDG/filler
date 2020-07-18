@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/14 09:52:16 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 10:31:58 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,13 @@ int			calc_heat_map(t_filler *ptr)
 		return (0);
 	if (!(enemy_coords = ptr->enemy_coords))
 		return (0);
-	calc_distance(ptr, &ptr->heat_map, enemy_coords->x, enemy_coords->y);
-	enemy_coords = enemy_coords->next;
-	while (enemy_coords)
+	if (ptr->flag2 == 1)
+	{
+		calc_distance(ptr, &ptr->heat_map, enemy_coords->x, enemy_coords->y);
+		enemy_coords = enemy_coords->next;
+		ptr->flag2 = 2;
+	}
+	while (enemy_coords != ptr->tmp_coords->next)
 	{
 		calc_distance(ptr, &tmp, enemy_coords->x, enemy_coords->y);
 		cycle_body(ptr, tmp);

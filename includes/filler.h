@@ -6,7 +6,7 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/16 12:51:45 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/18 10:08:13 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ typedef struct			s_filler
 	t_coords			*token_coords;
 	t_coords			*player_coords;
 	t_coords			*enemy_coords;
+	t_coords			*tmp_coords;
+	int					flag2;
 	int					x_move;
 	int					y_move;
 	int					x;
 	int					y;
+	int					flag;
 }						t_filler;
 
 void					init_values(t_filler *ptr);
