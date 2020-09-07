@@ -6,7 +6,7 @@
 #    By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/25 14:23:51 by bsausage          #+#    #+#              #
-#    Updated: 2020/07/18 13:40:04 by Alkor            ###   ########.fr        #
+#    Updated: 2020/07/19 08:51:33 by Alkor            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ HEADERS_DIRECTORY = includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = sources/
-SOURCES_LIST = get_data_1.c get_data_2.c init.c list.c heat_map.c solve.c\
+SOURCES_LIST = get_data_1.c get_data_2.c init.c list.c\
 free_functions.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
@@ -45,7 +45,7 @@ OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
 #FILLER_PLAYER
 
 F_SOURCES_DIRECTORY = sources/
-F_SOURCES_LIST = main.c 
+F_SOURCES_LIST = main.c heat_map.c solve.c
 F_SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(F_SOURCES_LIST))
 
 F_OBJECTS_LIST = $(patsubst %.c, %.o, $(F_SOURCES_LIST))
@@ -68,17 +68,12 @@ RESET = \033[0m
 
 .PHONY: all clean fclean re
 
-all: $(NAME) $(NAME_VIZ)
+all: $(NAME)
 
 $(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS) $(F_OBJECTS) $(LIBFT)
 	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) $(F_OBJECTS) $(LIBRARIES) -o $(NAME)
 	@echo "\n$(NAME): $(GREEN)object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
-
-$(NAME_VIZ): $(LIBFT) $(MINILIBX) $(OBJECTS_DIRECTORY) $(OBJECTS) $(VIZ_OBJECTS)
-	@$(CC) $(FLAGS) $(MLX_LIBRARIES) $(LIBRARIES) $(INCLUDES) $(OBJECTS) $(VIZ_OBJECTS) -o $(NAME_VIZ)
-	@echo "\n$(NAME_VIZ): $(GREEN)object files were created$(RESET)"
-	@echo "$(NAME_VIZ): $(GREEN)$(NAME_VIZ) was created$(RESET)"
 
 $(OBJECTS_DIRECTORY):
 	@mkdir -p $(OBJECTS_DIRECTORY)
@@ -91,6 +86,13 @@ $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
 $(LIBFT):
 	@echo "$(NAME): $(GREEN)Creating $(LIBFT)...$(RESET)"
 	@$(MAKE) -sC $(LIBFT_DIRECTORY)
+
+vis: $(NAME_VIZ)
+
+$(NAME_VIZ): $(LIBFT) $(MINILIBX) $(OBJECTS_DIRECTORY) $(OBJECTS) $(VIZ_OBJECTS)
+	@$(CC) $(FLAGS) $(MLX_LIBRARIES) $(LIBRARIES) $(INCLUDES) $(OBJECTS) $(VIZ_OBJECTS) -o $(NAME_VIZ)
+	@echo "\n$(NAME_VIZ): $(GREEN)object files were created$(RESET)"
+	@echo "$(NAME_VIZ): $(GREEN)$(NAME_VIZ) was created$(RESET)"
 
 $(MINILIBX):
 	@echo "$(MINILIBX): $(GREEN)Creating $(MINILIBX)...$(RESET)"
@@ -110,6 +112,8 @@ fclean: clean
 	@echo "$(MINILIBX): $(RED)$(MINILIBX) was deleted$(RESET)"
 	@rm -f $(NAME)
 	@echo "$(NAME): $(RED)$(NAME) was deleted$(RESET)"
+	@rm -f $(NAME_VIZ)
+	@echo "$(NAME_VIZ): $(RED)$(NAME_VIZ) was deleted$(RESET)"
 
 re:
 	@$(MAKE) fclean

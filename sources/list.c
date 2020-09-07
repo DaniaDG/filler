@@ -6,14 +6,13 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/18 12:29:19 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/19 10:46:53 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "filler.h"
 #include "get_next_line.h"
-#include <stdio.h>
 
 t_coords		*create_coord_elem(int x, int y)
 {

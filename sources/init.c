@@ -6,14 +6,13 @@
 /*   By: Alkor <Alkor@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 09:18:37 by bsausage          #+#    #+#             */
-/*   Updated: 2020/07/18 10:08:27 by Alkor            ###   ########.fr       */
+/*   Updated: 2020/07/19 10:46:45 by Alkor            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "filler.h"
 #include "get_next_line.h"
-#include <stdio.h>
 
 char	**init_char_tab(int height, int width)
 {
